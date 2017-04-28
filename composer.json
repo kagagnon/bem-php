@@ -1,7 +1,13 @@
 {
   "name": "kagagnon/bem-blade",
   "description": "Blade shortcodes to generate BEM class",
-  "type": "laravel,bem,blade,shortcode,class",
+  "keywords": [
+    "laravel",
+    "bem",
+    "blade",
+    "shortcode"
+  ],
+  "license": "MIT",
   "authors": [
     {
       "name": "Karl-André Gagnon",
