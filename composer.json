@@ -1,0 +1,18 @@
+{
+  "name": "kagagnon/bem-blade",
+  "description": "Blade shortcodes to generate BEM class",
+  "type": "laravel,bem,blade,shortcode,class",
+  "authors": [
+    {
+      "name": "Karl-André Gagnon",
+      "email": "gagnon.k-a@hotmail.fr"
+    }
+  ],
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {
+      "KAGagnon\\BEMBlade\\": "src"
+    }
+  }
+}
