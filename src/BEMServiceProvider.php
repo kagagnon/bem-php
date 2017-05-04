@@ -25,7 +25,7 @@ class BEMServiceProvider extends ServiceProvider{
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(
             __DIR__.'/../config/bem-blade.php',
-            'kagagnon.bem-blade'
+            'bem-blade'
         );
 
         BEM::boot();

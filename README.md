@@ -24,6 +24,47 @@ $ php artisan vendor:publish --provider="KAGagnon\BEMBlade\BEMServiceProvider" -
     
 You can then change your element and modifier separators to your liking.
 
+```php
+<?php
+return [
+
+    /**
+     * Separator between block and element
+     *
+     * Default: '__'
+     */
+    'element_separator' => '__',
+
+    /**
+     * Separator between modifer and block/element
+     *
+     * Default: '--'
+     */
+    'modifier_separator' => '--',
+
+    /**
+     * Should @bem create a tag element
+     *
+     * Default: false
+     */
+    'create_tag' => false,
+
+    /**
+     * If create_tag is true, what's the default tag name
+     *
+     * Default: 'div'
+     */
+    'default_tag' => 'div',
+
+    /**
+     * Prefix of BEM classes.
+     *
+     * Default: ''
+     */
+    'block_prefix' => '',
+];
+```
+
 # How to use
 
 ## Blocks
@@ -106,4 +147,32 @@ Result to :
        <a href="..." class="meta__link">Edit</a>
    </div>
 </div>
+```
+
+# Create node with @bem
+
+You can pass argument to `@bem` to automatically generate an HTML tag. 
+To do so, you can pass the tag name as second argument and, optionally, an array of attributes.
+
+You can also skip the tag name and pass an array as second argument. That will create an HTML element base on the `default_tag` configuration.
+
+Additionally, if you set `create_tag` to true, `@bem()` will always create a tag base on
+the `default_tag` configuration if only 1 argument is passed.
+
+## Example
+
+```blade
+{{-- We assume `create_tag` is set to true --}}
+@bem( 'block' ) // <div class="test">
+@endbem         // </div>
+
+@bem( 'block', 'article' ) // <article class="block">
+@endbem                    // </article>
+
+@bem( 'block', 'quote', [ 'data-inspiration', 'class' => 'js-action' ] ) // <quote class="js-action block" data-inspiration >
+@endbem                                                                  //</quote>
+
+@bem( 'block', [ 'id' => "anchor" ] ) // <div class="block" id="anchor">
+@endbem                               // </div>
+
 ```
