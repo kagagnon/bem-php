@@ -5,13 +5,13 @@ Install via composer with
 ```shell
 $ composer install kagagnon/bem-blade
 ```
-    
+
 After successfully installing BEM Blade, add the service provider in your app configs.
 
 ```php
 KAGagnon\BEMBlade\BEMServiceProvider::class,
 ```
-    
+
 The service provider will boot and register new directives in the Blade engine.
 
 ## Optional configurations
@@ -20,8 +20,8 @@ You can publish the config file with the following command:
 
 ```shell
 $ php artisan vendor:publish --provider="KAGagnon\BEMBlade\BEMServiceProvider" --tag="config"
-``` 
-    
+```
+
 You can then change your element and modifier separators to your liking.
 
 ```php
@@ -78,7 +78,7 @@ you can use `@endbem` to close the block. BEM block can be nest for sub-module. 
     @endbem
 @endbem
 ```
-    
+
 is a valid syntax.
 
 ## Classes
@@ -91,25 +91,25 @@ To generate a class, you can use `@bemclass( [ string|array $element, [ string|a
 - Passing a string and an array generate a block name with an element and its modifiers.
 - Passing 2 strings generate a block name with an element and explode the string on spaces to generate the modifiers.
 
- Check the examples below: 
- 
+ Check the examples below:
+
 ```blade
 @bem( 'cup' ) // Init Block "cup"
     @bemclass() // Generate : cup
-    @bemclass( [ 'glass' ] ) // Generate : cup--glass
+    @bemclass( [ 'glass' ] ) // Generate : cup cup--glass
 
     @bem( 'spoon' ) // Init Block "spoon"
         @bemclass // Generate : spoon
-        @bemclass( [ 'metallic', 'cold' ] ) // Generate : spoon--metallic spoon--cold
+        @bemclass( [ 'metallic', 'cold' ] ) // Generate : spoon spoon--metallic spoon--cold
         @bemclass( 'sugar' ) // Generate : spoon__sugar
-        @bemclass( 'sugar', 'half-tea-spoon' ) // Generate : spoon__sugar--half-tea-spoon
+        @bemclass( 'sugar', 'half-tea-spoon' ) // Generate : spoon__sugar spoon__sugar--half-tea-spoon
     @endbem
 
     @bemclass( 'tea' ) // Generate : cup__tea
     @bemclass( 'coffee' ) // Generate : cup_coffee
-    @bemclass( 'coffee' , 'with-sugar' ) // Generate : cup__coffe--with-sugar
-    @bemclass( 'coffee' , [ 'with-sugar', 'with-milk'] ) // Generate : cup__coffee--with-sugar cup__coffee--with-milk
-    @bemclass( 'coffee' , 'with-sugar with-milk no-foam' ) // Generate : cup__coffee--with-sugar cup__coffee--with-milk cup__coffee--no-foam
+    @bemclass( 'coffee' , 'with-sugar' ) // Generate : cup__coffee cup__coffee--with-sugar
+    @bemclass( 'coffee' , [ 'with-sugar', 'with-milk'] ) // Generate : cup__coffee cup__coffee--with-sugar cup__coffee--with-milk
+    @bemclass( 'coffee' , 'with-sugar with-milk no-foam' ) // Generate : cup__coffee cup__coffee--with-sugar cup__coffee--with-milk cup__coffee--no-foam
 @endbem
 ```
 
@@ -119,9 +119,9 @@ To generate a class, you can use `@bemclass( [ string|array $element, [ string|a
 @bem( 'article' )
    <div class="@bemclass">
        <h1 class="@bemclass( 'title' )">Article Name</h1>
-       
+
        <p class="@bemclass( 'content' )">Article text...</p>
-       
+
        @bem( 'meta' )
            <div class="@bemclass">
                <a href="..." class="@bemclass( 'link', 'inactive' )">0 comments</a>
@@ -138,9 +138,9 @@ Result to :
 ```html
 <div class="article">
    <h1 class="article__title">Article Name</h1>
-   
+
    <p class="article__content">Article text...</p>
-   
+
    <div class="meta">
        <a href="..." class="meta__link--inactive">0 comments</a>
        <a href="..." class="meta__link--clear meta__link--danger">Delete</a>
@@ -151,7 +151,7 @@ Result to :
 
 # Create node with @bem
 
-You can pass argument to `@bem` to automatically generate an HTML tag. 
+You can pass argument to `@bem` to automatically generate an HTML tag.
 To do so, you can pass the tag name as second argument and, optionally, an array of attributes.
 
 You can also skip the tag name and pass an array as second argument. That will create an HTML element base on the `default_tag` configuration.
@@ -159,11 +159,13 @@ You can also skip the tag name and pass an array as second argument. That will c
 Additionally, if you set `create_tag` to true, `@bem()` will always create a tag base on
 the `default_tag` configuration if only 1 argument is passed.
 
+To pass modifiers to the tag, simply pass `_modifiers` in the array: an array for multi-modifiers ou a string for single modifier.
+
 ## Example
 
 ```blade
 {{-- We assume `create_tag` is set to true --}}
-@bem( 'block' ) // <div class="test">
+@bem( 'block' ) // <div class="block">
 @endbem         // </div>
 
 @bem( 'block', 'article' ) // <article class="block">
@@ -173,6 +175,12 @@ the `default_tag` configuration if only 1 argument is passed.
 @endbem                                                                  //</quote>
 
 @bem( 'block', [ 'id' => "anchor" ] ) // <div class="block" id="anchor">
+@endbem                               // </div>
+
+@bem( 'block', [ 'id' => "anchor", '_modifiers' => 'modifier' ] ) // <div class="block block--modifier" id="anchor">
+@endbem                               // </div>
+
+@bem( 'block', [ '_modifiers' => [ 'modifier1', 'modifier2' ] ] ) // <div class="block block--modifier1 block--modifier2">
 @endbem                               // </div>
 
 ```

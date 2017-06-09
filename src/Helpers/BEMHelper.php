@@ -42,7 +42,8 @@ class BEMHelper{
 
         if( $tag_name ){
             $class_in_attributes = array_get( $attributes, 'class', '' );
-            $attributes[ 'class' ] = $class_in_attributes . " " . self::getBemClass();
+            $attributes[ 'class' ] = $class_in_attributes . " " . self::getBemClass( false, array_get( $attributes, '_modifiers', [] ) );
+            unset( $attributes[ '_modifiers' ] );
 
             $all_attributes = [];
             if( !empty( $attributes ) ){
@@ -88,17 +89,14 @@ class BEMHelper{
             $full_class .= $el_sep.$element;
         }
 
-        if( empty( $modifiers ) ){
-            return $full_class;
-        }else{
-            $all_classes = [];
-
+        $all_classes = [ $full_class ];
+        if( !empty( $modifiers ) ){
             foreach( $modifiers as $modifier ){
                 $all_classes[] = $full_class.$mod_sep.$modifier;
             }
-
-            return implode( ' ', $all_classes);
         }
+
+        return implode( ' ', $all_classes);
     }
 
     /**
