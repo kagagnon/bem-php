@@ -68,7 +68,7 @@ class BEMHelper{
      * @param string|array $element   Name of element or array of modifier
      * @param array        $modifiers Array of modifier
      */
-    protected static function getBemClass( $element = '', $modifiers = [] ){
+    public static function getBemClass( $element = '', $modifiers = [] ){
         $block = array_last( self::$block_scope );
         if( is_array( $element ) ){
             $modifiers = $element;
