@@ -75,7 +75,7 @@ class BEMHelper{
             $element = '';
         }
 
-        if( is_string( $modifiers ) ){
+        if( is_string( $modifiers ) && trim( $modifiers ) ){
             $modifiers = explode( ' ', $modifiers );
         }
 
