@@ -1,9 +1,42 @@
 <?php
 
-namespace KAGagnon\BEMBlade\Helpers;
+namespace KAGagnon\BemPhp\Helpers;
 
 
-class BEMHelper{
+class BemHelper{
+
+    /**
+     * BEM configurations
+     */
+
+    /**
+     * Separator between block and element
+     */
+    public static $element_separator = '__';
+
+    /**
+     * Separator between modifer and block/element
+     */
+    public static $modifier_separator = '--';
+
+    /**
+     * Should @bem create a tag element
+     */
+    public static $create_tag = false;
+
+    /**
+     * If create_tag is true, what's the default tag name
+     */
+    public static $default_tag = 'div';
+
+    /**
+     * Prefix of BEM classes.
+     */
+    public static $block_prefix = '';
+
+    /**
+     * END :: BEM configurations
+     */
 
     /**
      * Each created scope
@@ -27,11 +60,11 @@ class BEMHelper{
     public static function startBlock( $block_name, $tag_name = '', $attributes = [] ){
         self::$block_scope[] = $block_name;
 
-        $default_tag = config( 'bem-blade.default_tag', 'div' );
+        $default_tag = self::$default_tag;
 
         if( empty( $tag_name ) ){
-            if( config( 'bem-blade.create_tag', false ) ){
-                $tag_name = config( 'bem-blade.default_tag', 'div' );
+            if( self::$create_tag ){
+                $tag_name = self::$default_tag;
             }
         }else if( is_array( $tag_name ) ){
             $attributes = $tag_name;
@@ -41,8 +74,8 @@ class BEMHelper{
         self::$block_tag[] = $tag_name;
 
         if( $tag_name ){
-            $class_in_attributes = array_get( $attributes, 'class', '' );
-            $attributes[ 'class' ] = $class_in_attributes . " " . self::getBemClass( false, array_get( $attributes, '_modifiers', [] ) );
+            $class_in_attributes = isset( $attributes[ 'class' ] ) ? $attributes[ 'class' ] :  '';
+            $attributes[ 'class' ] = $class_in_attributes . " " . self::getbemHelper::BemClass( false, array_get( $attributes, '_modifiers', [] ) );
             unset( $attributes[ '_modifiers' ] );
 
             $all_attributes = [];
@@ -61,15 +94,15 @@ class BEMHelper{
     }
 
     public static function bemClass(){
-        echo call_user_func_array( [ self::class, 'getBemClass' ], func_get_args() );
+        echo call_user_func_array( [ self::class, 'getbemHelper::BemClass' ], func_get_args() );
     }
 
     /**
      * @param string|array $element   Name of element or array of modifier
      * @param array        $modifiers Array of modifier
      */
-    public static function getBemClass( $element = '', $modifiers = [] ){
-        $block = array_last( self::$block_scope );
+    public static function getbemHelper::BemClass( $element = '', $modifiers = [] ){
+        $block = self::$block_scope[ count( self::$block_scope ) - 1 ];
         if( is_array( $element ) ){
             $modifiers = $element;
             $element = '';
@@ -79,9 +112,9 @@ class BEMHelper{
             $modifiers = explode( ' ', $modifiers );
         }
 
-        $block_prefix = config( 'bem-blade.block_prefix', '' );
-        $el_sep = config( 'bem-blade.element_separator', '__' );
-        $mod_sep = config( 'bem-blade.modifier_separator', '--' );
+        $block_prefix = self::$block_prefix;
+        $el_sep = self::$element_separator;
+        $mod_sep = self::$modifier_separator;
 
         $full_class = $block_prefix.$block;
 

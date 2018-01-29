@@ -3,87 +3,63 @@
 Install via composer with
 
 ```shell
-$ composer install kagagnon/bem-blade
+$ composer install kagagnon/bem-php
 ```
-
-After successfully installing BEM Blade, add the service provider in your app configs.
-
-```php
-KAGagnon\BEMBlade\BEMServiceProvider::class,
-```
-
-The service provider will boot and register new directives in the Blade engine.
 
 ## Optional configurations
 
-You can publish the config file with the following command:
-
-```shell
-$ php artisan vendor:publish --provider="KAGagnon\BEMBlade\BEMServiceProvider" --tag="config"
-```
-
-You can then change your element and modifier separators to your liking.
+Configurations are static properties to the `KAGagnon\BemPhp\Helpers\BemHelper` class. You can edit them before using `BemPhp`:
 
 ```php
 <?php
-return [
+/**
+ * Separator between block and element
+ */
+KAGagnon\BemPhp\Helpers\BemHelper::$element_separator = '__';
 
-    /**
-     * Separator between block and element
-     *
-     * Default: '__'
-     */
-    'element_separator' => '__',
+/**
+ * Separator between modifer and block/element
+ */
+KAGagnon\BemPhp\Helpers\BemHelper::$modifier_separator = '--';
 
-    /**
-     * Separator between modifer and block/element
-     *
-     * Default: '--'
-     */
-    'modifier_separator' => '--',
+/**
+ * Should @bem create a tag element
+ */
+KAGagnon\BemPhp\Helpers\BemHelper::$create_tag = false;
 
-    /**
-     * Should @bem create a tag element
-     *
-     * Default: false
-     */
-    'create_tag' => false,
+/**
+ * If create_tag is true, what's the default tag name
+ */
+KAGagnon\BemPhp\Helpers\BemHelper::$default_tag = 'div';
 
-    /**
-     * If create_tag is true, what's the default tag name
-     *
-     * Default: 'div'
-     */
-    'default_tag' => 'div',
-
-    /**
-     * Prefix of BEM classes.
-     *
-     * Default: ''
-     */
-    'block_prefix' => '',
-];
+/**
+ * Prefix of BEM classes.
+ */
+KAGagnon\BemPhp\Helpers\BemHelper::$block_prefix = '';
 ```
 
 # How to use
 
+It is recommanded to include a `use` statement before using `BemHelper` Class. Alternatively, you can create helper functions to shorten the uses of the class.
+
 ## Blocks
 
-You can create a new block with the directive `@bem( $block_name )`. Once the block if finished,
-you can use `@endbem` to close the block. BEM block can be nest for sub-module. So this:
+You can create a new block with the directive `BemHelper::startBlock( $block_name )`. Once the block if finished,
+you can use `BemHelper::endBlock()` to close the block. BEM block can be nested for sub-module. So this:
 
-```blade
-@bem( 'block' )
-    @bem( 'other-block )
-    @endbem
-@endbem
+```php
+<?php
+BemHelper::startBlock( 'block' );
+    BemHelper::startBlock( 'other-block' );
+    BemHelper::endBlock();
+BemHelper::endBlock();
 ```
 
 is a valid syntax.
 
 ## Classes
 
-To generate a class, you can use `@bemclass( [ string|array $element, [ string|array $modifiers ] ] )`.
+To generate a class, you can use `BemHelper::bemClass( [ string|array $element, [ string|array $modifiers ] ] )`.
 
 - Passing no arguments generate the block name.
 - Passing a string as first argument generate the block name with an element.
@@ -93,44 +69,45 @@ To generate a class, you can use `@bemclass( [ string|array $element, [ string|a
 
  Check the examples below:
 
-```blade
-@bem( 'cup' ) // Init Block "cup"
-    @bemclass() // Generate : cup
-    @bemclass( [ 'glass' ] ) // Generate : cup cup--glass
+```php
+<?php
+BemHelper::startBlock( 'cup' ); // Init Block "cup"
+    BemHelper::bemClass(); // Generate : cup
+    BemHelper::bemClass( [ 'glass' ] ); // Generate : cup cup--glass
 
-    @bem( 'spoon' ) // Init Block "spoon"
-        @bemclass // Generate : spoon
-        @bemclass( [ 'metallic', 'cold' ] ) // Generate : spoon spoon--metallic spoon--cold
-        @bemclass( 'sugar' ) // Generate : spoon__sugar
-        @bemclass( 'sugar', 'half-tea-spoon' ) // Generate : spoon__sugar spoon__sugar--half-tea-spoon
-    @endbem
+    BemHelper::startBlock( 'spoon' ); // Init Block "spoon"
+        BemHelper::bemClass(); // Generate : spoon
+        BemHelper::bemClass( [ 'metallic', 'cold' ] ); // Generate : spoon spoon--metallic spoon--cold
+        BemHelper::bemClass( 'sugar' ); // Generate : spoon__sugar
+        BemHelper::bemClass( 'sugar', 'half-tea-spoon' ); // Generate : spoon__sugar spoon__sugar--half-tea-spoon
+    BemHelper::EndBlock();
 
-    @bemclass( 'tea' ) // Generate : cup__tea
-    @bemclass( 'coffee' ) // Generate : cup_coffee
-    @bemclass( 'coffee' , 'with-sugar' ) // Generate : cup__coffee cup__coffee--with-sugar
-    @bemclass( 'coffee' , [ 'with-sugar', 'with-milk'] ) // Generate : cup__coffee cup__coffee--with-sugar cup__coffee--with-milk
-    @bemclass( 'coffee' , 'with-sugar with-milk no-foam' ) // Generate : cup__coffee cup__coffee--with-sugar cup__coffee--with-milk cup__coffee--no-foam
-@endbem
+    BemHelper::bemClass( 'tea' ); // Generate : cup__tea
+    BemHelper::bemClass( 'coffee' ); // Generate : cup_coffee
+    BemHelper::bemClass( 'coffee' , 'with-sugar' ); // Generate : cup__coffee cup__coffee--with-sugar
+    BemHelper::bemClass( 'coffee' , [ 'with-sugar', 'with-milk'] ); // Generate : cup__coffee cup__coffee--with-sugar cup__coffee--with-milk
+    BemHelper::bemClass( 'coffee' , 'with-sugar with-milk no-foam' ); // Generate : cup__coffee cup__coffee--with-sugar cup__coffee--with-milk cup__coffee--no-foam
+BemHelper::EndBlock();
 ```
 
 ## HTML example
 
-```blade
-@bem( 'article' )
-   <div class="@bemclass">
-       <h1 class="@bemclass( 'title' )">Article Name</h1>
+```php
+<?php BemHelper::startBlock( 'article' ) ?>
+   <div class="<?php BemHelper::bemClass() ?>">
+       <h1 class="<?php BemHelper::bemClass( 'title' ) ?>">Article Name</h1>
 
-       <p class="@bemclass( 'content' )">Article text...</p>
+       <p class="<?php BemHelper::bemClass( 'content' ) ?>">Article text...</p>
 
-       @bem( 'meta' )
-           <div class="@bemclass">
-               <a href="..." class="@bemclass( 'link', 'inactive' )">0 comments</a>
-               <a href="..." class="@bemclass( 'link', 'clear danger' )">Delete</a>
-               <a href="..." class="@bemclass( 'link' )">Edit</a>
+       <?php BemHelper::startBlock( 'meta' ) ?>
+           <div class="<?php BemHelper::bemClass() ?>">
+               <a href="..." class="<?php BemHelper::bemClass( 'link', 'inactive' ) ?>">0 comments</a>
+               <a href="..." class="<?php BemHelper::bemClass( 'link', 'clear danger' ) ?>">Delete</a>
+               <a href="..." class="<?php BemHelper::bemClass( 'link' ) ?>">Edit</a>
            </div>
-       @endbem
+       <?php BemHelper::endBlock(); ?>
    </div>
-@endbem
+<?php BemHelper::endBlock(); ?>
 ```
 
 Result to :
@@ -149,38 +126,40 @@ Result to :
 </div>
 ```
 
-# Create node with @bem
+# Create node with `startBlock()`
 
-You can pass argument to `@bem` to automatically generate an HTML tag.
+You can pass argument to `startBlock()` to automatically generate an HTML tag.
 To do so, you can pass the tag name as second argument and, optionally, an array of attributes.
 
 You can also skip the tag name and pass an array as second argument. That will create an HTML element base on the `default_tag` configuration.
 
-Additionally, if you set `create_tag` to true, `@bem()` will always create a tag base on
+Additionally, if you set `create_tag` to true, `startBlock()` will always create a tag base on
 the `default_tag` configuration if only 1 argument is passed.
 
-To pass modifiers to the tag, simply pass `_modifiers` in the array: an array for multi-modifiers ou a string for single modifier.
+To pass modifiers to the tag, simply pass `_modifiers` in the array: an array for multi-modifiers or a string for single modifier.
 
 ## Example
 
-```blade
-{{-- We assume `create_tag` is set to true --}}
-@bem( 'block' ) // <div class="block">
-@endbem         // </div>
+```php
+<?php
+// We assume `create_tag` is set to true
 
-@bem( 'block', 'article' ) // <article class="block">
-@endbem                    // </article>
+BemHelper::startBlock( 'block' ) // <div class="block">
+BemHelper::endBlock()            // </div>
 
-@bem( 'block', 'quote', [ 'data-inspiration', 'class' => 'js-action' ] ) // <quote class="js-action block" data-inspiration >
-@endbem                                                                  //</quote>
+BemHelper::startBlock( 'block', 'article' ) // <article class="block">
+BemHelper::endBlock()                       // </article>
 
-@bem( 'block', [ 'id' => "anchor" ] ) // <div class="block" id="anchor">
-@endbem                               // </div>
+BemHelper::startBlock( 'block', 'quote', [ 'data-inspiration', 'class' => 'js-action' ] ) // <quote class="js-action block" data-inspiration >
+BemHelper::endBlock()                                                                     //</quote>
 
-@bem( 'block', [ 'id' => "anchor", '_modifiers' => 'modifier' ] ) // <div class="block block--modifier" id="anchor">
-@endbem                               // </div>
+BemHelper::startBlock( 'block', [ 'id' => "anchor" ] ) // <div class="block" id="anchor">
+BemHelper::endBlock()                                  // </div>
 
-@bem( 'block', [ '_modifiers' => [ 'modifier1', 'modifier2' ] ] ) // <div class="block block--modifier1 block--modifier2">
-@endbem                               // </div>
+BemHelper::startBlock( 'block', [ 'id' => "anchor", '_modifiers' => 'modifier' ] ) // <div class="block block--modifier" id="anchor">
+BemHelper::endBlock()                                  // </div>
+
+BemHelper::startBlock( 'block', [ '_modifiers' => [ 'modifier1', 'modifier2' ] ] ) // <div class="block block--modifier1 block--modifier2">
+BemHelper::endBlock()                                  // </div>
 
 ```

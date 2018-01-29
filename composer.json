@@ -1,11 +1,12 @@
 {
-  "name": "kagagnon/bem-blade",
-  "description": "Blade shortcodes to generate BEM class",
+  "name": "kagagnon/bem-php",
+  "description": "PHP shortcodes to generate BEM class with a Laravel integration",
   "keywords": [
     "laravel",
     "bem",
     "blade",
-    "shortcode"
+    "shortcode",
+    "php"
   ],
   "license": "MIT",
   "authors": [
@@ -18,7 +19,7 @@
   },
   "autoload": {
     "psr-4": {
-      "KAGagnon\\BEMBlade\\": "src"
+      "KAGagnon\\BemPhp\\": "src"
     }
   }
 }

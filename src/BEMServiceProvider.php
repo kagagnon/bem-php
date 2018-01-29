@@ -1,11 +1,11 @@
 <?php
-namespace KAGagnon\BEMBlade;
+namespace KAGagnon\BemPhp;
 
 
 use Illuminate\Support\ServiceProvider;
-use KAGagnon\BEMBlade\Blade\BEM;
+use KAGagnon\BemPhp\Laravel\Bem;
 
-class BEMServiceProvider extends ServiceProvider{
+class BemServiceProvider extends ServiceProvider{
 
     /**
      * Indicates if loading of the provider is deferred.
@@ -24,8 +24,8 @@ class BEMServiceProvider extends ServiceProvider{
         $this->publishes([__DIR__.'/../config' => config_path()], 'config');
         // use the vendor configuration file as fallback
         $this->mergeConfigFrom(
-            __DIR__.'/../config/bem-blade.php',
-            'bem-blade'
+            __DIR__.'/../config/bem-php.php',
+            'bem-php'
         );
 
         BEM::boot();
