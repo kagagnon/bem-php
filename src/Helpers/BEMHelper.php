@@ -94,7 +94,7 @@ class BemHelper{
     }
 
     public static function bemClass(){
-        echo call_user_func_array( [ self::class, 'getbemHelper::BemClass' ], func_get_args() );
+        echo call_user_func_array( [ self::class, 'getBemClass' ], func_get_args() );
     }
 
     /**
