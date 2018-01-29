@@ -75,7 +75,7 @@ class BemHelper{
 
         if( $tag_name ){
             $class_in_attributes = isset( $attributes[ 'class' ] ) ? $attributes[ 'class' ] :  '';
-            $attributes[ 'class' ] = $class_in_attributes . " " . self::getbemHelper::BemClass( false, array_get( $attributes, '_modifiers', [] ) );
+            $attributes[ 'class' ] = $class_in_attributes . " " . self::getBemClass( false, array_get( $attributes, '_modifiers', [] ) );
             unset( $attributes[ '_modifiers' ] );
 
             $all_attributes = [];
@@ -101,7 +101,7 @@ class BemHelper{
      * @param string|array $element   Name of element or array of modifier
      * @param array        $modifiers Array of modifier
      */
-    public static function getbemHelper::BemClass( $element = '', $modifiers = [] ){
+    public static function getBemClass( $element = '', $modifiers = [] ){
         $block = self::$block_scope[ count( self::$block_scope ) - 1 ];
         if( is_array( $element ) ){
             $modifiers = $element;
