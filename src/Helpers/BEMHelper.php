@@ -75,7 +75,7 @@ class BemHelper{
 
         if( $tag_name ){
             $class_in_attributes = isset( $attributes[ 'class' ] ) ? $attributes[ 'class' ] :  '';
-            $attributes[ 'class' ] = $class_in_attributes . " " . self::getBemClass( false, array_get( $attributes, '_modifiers', [] ) );
+            $attributes[ 'class' ] = $class_in_attributes . " " . self::getBemClass( false, isset( $attributes[ '_modifiers' ] ) ? $attributes[ '_modifiers' ] : [] );
             unset( $attributes[ '_modifiers' ] );
 
             $all_attributes = [];
