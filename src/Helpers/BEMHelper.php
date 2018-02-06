@@ -101,8 +101,8 @@ class BemHelper{
      * @param string|array $element   Name of element or array of modifier
      * @param array        $modifiers Array of modifier
      */
-    public static function getBemClass( $element = '', $modifiers = [] ){
-        $block = self::$block_scope[ count( self::$block_scope ) - 1 ];
+    public static function getBemClass( $element = '', $modifiers = [], $parent_level = 0 ){
+        $block = self::$block_scope[ count( self::$block_scope ) - 1 - $parent_level ];
         if( is_array( $element ) ){
             $modifiers = $element;
             $element = '';

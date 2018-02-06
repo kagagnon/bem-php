@@ -59,13 +59,14 @@ is a valid syntax.
 
 ## Classes
 
-To generate a class, you can use `BemHelper::bemClass( [ string|array $element, [ string|array $modifiers ] ] )`.
+To generate a class, you can use `BemHelper::bemClass( [ string|array $element [, string|array $modifiers[, integer $parent_level = 0 ]]] )`.
 
 - Passing no arguments generate the block name.
 - Passing a string as first argument generate the block name with an element.
 - Passing an array as first argument generate the block name with the modifiers.
 - Passing a string and an array generate a block name with an element and its modifiers.
 - Passing 2 strings generate a block name with an element and explode the string on spaces to generate the modifiers.
+- Parent level integer allow to use a parent BEM class in nested loops.
 
  Check the examples below:
 
@@ -80,6 +81,7 @@ BemHelper::startBlock( 'cup' ); // Init Block "cup"
         BemHelper::bemClass( [ 'metallic', 'cold' ] ); // Generate : spoon spoon--metallic spoon--cold
         BemHelper::bemClass( 'sugar' ); // Generate : spoon__sugar
         BemHelper::bemClass( 'sugar', 'half-tea-spoon' ); // Generate : spoon__sugar spoon__sugar--half-tea-spoon
+        BemHelper::bemClass( 'spoon-holder', '', 1 ) // Generate : cup__spoon-holder
     BemHelper::EndBlock();
 
     BemHelper::bemClass( 'tea' ); // Generate : cup__tea
