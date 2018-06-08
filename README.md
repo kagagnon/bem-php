@@ -40,7 +40,7 @@ KAGagnon\BemPhp\Helpers\BemHelper::$block_prefix = '';
 
 # How to use
 
-It is recommanded to include a `use` statement before using `BemHelper` Class. Alternatively, you can create helper functions to shorten the uses of the class.
+It is recommanded to include a `use` statement before using `BemHelper` Class. Alternatively, you can create helper functions to shorten the use of the class.
 
 ## Blocks
 
@@ -164,4 +164,24 @@ BemHelper::endBlock()                                  // </div>
 BemHelper::startBlock( 'block', [ '_modifiers' => [ 'modifier1', 'modifier2' ] ] ) // <div class="block block--modifier1 block--modifier2">
 BemHelper::endBlock()                                  // </div>
 
+```
+
+# Use with Laravel (Blade directives)
+
+This plugin comes with a Laravel integration. You can include the `KAGagnon\BemPhp\BemServiceProvider` class in your application service providers list. The following directive will be mapped :
+
+```
+@bem( ... ) => BemHelper::startBlock
+@bemclass( ... ) => BemHelper::bemClass
+@endbem => BemHelper::endBlock
+```
+
+# Twig extension
+
+This plugin comes with a Twig integration. You can register the `KAGagnon\BemPhp\Twig\BemTwigExtension` in Twig extensions. The following directive will be mapped :
+
+```
+{% bem( ... ) %} => BemHelper::startBlock
+{{ bemclass( ... ) }} => BemHelper::endBlock
+{% endbem %} => BemHelper::getBemClass
 ```
