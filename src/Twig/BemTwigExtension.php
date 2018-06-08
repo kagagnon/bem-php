@@ -1,5 +1,5 @@
 <?php
-namespace KAGagnon\BemTwig;
+namespace KAGagnon\BemPhp\Twig;
 
 // use KAGagnon\BemTwig\BemTokenParser;
 use KAGagnon\BemPhp\Helpers\BemHelper;
