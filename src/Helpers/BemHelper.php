@@ -125,7 +125,9 @@ class BemHelper{
         $all_classes = [ $full_class ];
         if( !empty( $modifiers ) ){
             foreach( $modifiers as $modifier ){
-                $all_classes[] = $full_class.$mod_sep.$modifier;
+                if( $modifier ){
+                    $all_classes[] = $full_class . $mod_sep . $modifier;
+                }
             }
         }
 
