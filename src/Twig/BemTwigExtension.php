@@ -4,7 +4,7 @@ namespace KAGagnon\BemPhp\Twig;
 // use KAGagnon\BemTwig\BemTokenParser;
 use KAGagnon\BemPhp\Helpers\BemHelper;
 use Twig_Extension;
-use Twig_Function;
+use Twig_SimpleFunction;
 
 class BemTwigExtension extends Twig_Extension{
     public function getTokenParsers(){
@@ -15,7 +15,7 @@ class BemTwigExtension extends Twig_Extension{
 
     public function getFunctions(){
         return [
-            new Twig_Function( 'bemclass', [ BemHelper::class, 'getBemClass' ] ),
+            new Twig_SimpleFunction( 'bemclass', [ BemHelper::class, 'getBemClass' ] ),
         ];
     }
 }
