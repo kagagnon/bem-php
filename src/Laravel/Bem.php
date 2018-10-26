@@ -2,7 +2,7 @@
 
 namespace KAGagnon\BemPhp\Laravel;
 
-use Illuminate\Support\Facades\Laravel;
+use Illuminate\Support\Facades\Blade;
 use KAGagnon\BemPhp\Helpers\BemHelper;
 
 class Bem{
