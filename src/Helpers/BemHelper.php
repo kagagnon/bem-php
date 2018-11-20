@@ -108,8 +108,8 @@ class BemHelper{
             $element = '';
         }
 
-        if( is_string( $modifiers ) && trim( $modifiers ) ){
-            $modifiers = explode( ' ', $modifiers );
+        if( is_string( $modifiers )|| is_numeric( $modifiers ) && trim( $modifiers ) ){
+            $modifiers = explode( ' ', (string) $modifiers );
         }
 
         $block_prefix = self::$block_prefix;
