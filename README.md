@@ -92,6 +92,31 @@ BemHelper::startBlock( 'cup' ); // Init Block "cup"
 BemHelper::EndBlock();
 ```
 
+##Conditional modifiers
+
+Sometime, you might want to use conditions to set modifiers such as if it is the first or last iteration of the loop.
+To do so, you can set your modifiers by passing an array where the key is the classname and the value is the condition.
+That way, if the condition resolves as true, the modifier will be added to the list.
+
+```php
+BemHelper::bemClass( 'coffee', [
+    'with-sugar' => $has_sugar == true
+] );
+```
+
+You can mix conditional modifiers with other modifiers, and it also works with the `startBlock` method.
+
+```php
+BemHelper::startBlock( 'cup', 'div', [
+    '_modifiers' => [
+        'blue',
+        'is-cold' => !$has_hot_beverage,
+        'is-empty' => $finished
+    ]
+] );
+```
+
+
 ## HTML example
 
 ```php
