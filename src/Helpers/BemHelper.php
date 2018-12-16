@@ -74,7 +74,7 @@ class BemHelper{
         self::$block_tag[] = $tag_name;
 
         if( $tag_name ){
-            $class_in_attributes = isset( $attributes[ 'class' ] ) ? $attributes[ 'class' ] :  '';
+            $class_in_attributes = isset( $attributes[ 'class' ] ) ? $attributes[ 'class' ] : '';
             $attributes[ 'class' ] = $class_in_attributes . " " . self::getBemClass( false, isset( $attributes[ '_modifiers' ] ) ? $attributes[ '_modifiers' ] : [] );
             unset( $attributes[ '_modifiers' ] );
 
@@ -89,7 +89,7 @@ class BemHelper{
                 }
             }
 
-            echo "<$tag_name ".implode( ' ', $all_attributes )." >";
+            echo "<$tag_name " . implode( ' ', $all_attributes ) . " >";
         }
     }
 
@@ -108,34 +108,36 @@ class BemHelper{
             $element = '';
         }
 
-        if( is_string( $modifiers )|| is_numeric( $modifiers ) && trim( $modifiers ) ){
-            $modifiers = explode( ' ', (string) $modifiers );
+        if( !is_array( $modifiers ) ){
+            $modifiers = [ $modifiers ];
         }
 
         $block_prefix = self::$block_prefix;
         $el_sep = self::$element_separator;
         $mod_sep = self::$modifier_separator;
 
-        $full_class = $block_prefix.$block;
+        $full_class = $block_prefix . $block;
 
         if( $element ){
-            $full_class .= $el_sep.$element;
+            $full_class .= $el_sep . $element;
         }
 
         $all_classes = [ $full_class ];
         if( !empty( $modifiers ) ){
             foreach( $modifiers as $key => $modifier ){
                 if( is_string( $key ) ){
-                    if( $modifier ){
-                        $all_classes[] = $full_class . $mod_sep . $key;
+                    $modifier = $modifier ? $key : '';
+                }
+
+                if( !empty( trim( (string) $modifier ) ) ){
+                    foreach( explode( ' ', $modifier ) as $single_modifier ){
+                        $all_classes[] = $full_class . $mod_sep . $single_modifier;
                     }
-                }elseif( $modifier ){
-                    $all_classes[] = $full_class . $mod_sep . $modifier;
                 }
             }
         }
 
-        return implode( ' ', $all_classes);
+        return implode( ' ', $all_classes );
     }
 
     /**
